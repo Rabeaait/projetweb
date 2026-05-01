@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="sanctuaire">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion — Hadj Lottery</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/themes.css" />
+  <style>
+    .auth-layout {
+      position: relative;
+      overflow: hidden;
+      justify-content: center;
+      align-items: center;
+    }
+    .auth-layout::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      background: url('photo mecque.jpg') no-repeat center center;
+      background-size: cover;
+      filter: blur(10px);
+      transform: scale(1.1);
+      z-index: 0;
+    }
+    .auth-layout::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(25, 50, 110, 0.6);
+      z-index: 1;
+    }
+    .auth-left { display: none; }
+    .auth-right {
+      position: relative;
+      z-index: 2;
+      flex: unset;
+      width: 100%;
+      max-width: 520px;
+      padding: 40px 20px;
+    }
+    .auth-card-header { text-align: center; }
+
+    .role-selector {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+    .role-btn {
+      flex: 1;
+      padding: 14px 10px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      cursor: pointer;
+      text-align: center;
+      transition: border-color .2s, background .2s;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .role-btn .role-icon { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+    .role-btn.selected {
+      border-color: var(--primary);
+      background: var(--primary-bg);
+      color: var(--primary-dark);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-layout">
+
+
+    <!-- Panneau de connexion -->
+    <div class="auth-right">
+      <div class="auth-card">
+
+        <div class="auth-card-header">
+          <h3>Connexion</h3>
+          <p>Entrez vos identifiants pour accéder à votre compte.</p>
+        </div>
+
+        <div class="auth-card-body">
+          <form class="auth-form" action="#" method="POST" onsubmit="handleLogin(event)">
+
+            <div class="form-group">
+              <label class="form-label">Je suis <span class="required">*</span></label>
+              <div class="role-selector">
+                <div class="role-btn selected" id="role-user" onclick="selectRole('user')">
+                  <span class="role-icon">👤</span>
+                  Utilisateur
+                </div>
+                <div class="role-btn" id="role-admin" onclick="selectRole('admin')">
+                  <span class="role-icon">🛡️</span>
+                  Administrateur
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="email">
+                Adresse email <span class="required">*</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-control"
+                placeholder="exemple@email.com"
+                required
+                autocomplete="email"
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="password">
+                Mot de passe <span class="required">*</span>
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-control"
+                placeholder="Votre mot de passe"
+                required
+                autocomplete="current-password"
+              />
+              <span class="form-hint">Minimum 8 caractères.</span>
+            </div>
+
+            <!-- Message d'erreur (affiché si mauvais identifiants) -->
+            <div class="alert alert-danger hidden" id="login-error">
+              ❌ Email ou mot de passe incorrect. Veuillez réessayer.
+            </div>
+
+            <!-- Message compte en attente -->
+            <div class="alert alert-warning hidden" id="pending-msg">
+              ⏳ Votre compte est en attente de validation par un administrateur.
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block btn-lg">
+              Se connecter
+            </button>
+
+          </form>
+        </div>
+
+        <div class="auth-footer">
+          Pas encore de compte ?
+          <a href="register.html">Créer un compte</a>
+        </div>
+
+      </div>
+
+      <p class="mt-24" style="font-size:.82rem; color:var(--text-light); text-align:center;">
+        <a href="index.html" style="color:var(--primary);">← Retour à l'accueil</a>
+      </p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <script src="js/login.js"></script>
+</body>
+</html>

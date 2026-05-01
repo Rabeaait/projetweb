@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="sanctuaire">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nouvelles demandes — Hadj Lottery</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/themes.css" />
+</head>
+<body>
+
+  <div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="38" height="38" style="flex-shrink:0">
+          <defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DAA65"/><stop offset="100%" stop-color="#0D5A30"/></linearGradient></defs>
+          <rect x="16" y="16" width="68" height="68" rx="13" fill="url(#mg)"/>
+          <rect x="16" y="16" width="68" height="68" rx="13" fill="url(#mg)" transform="rotate(45,50,50)"/>
+          <rect x="20" y="46" width="10" height="38" rx="3" fill="white"/>
+          <polygon points="25,35 19,46 31,46" fill="white"/>
+          <rect x="19" y="55" width="12" height="2" rx="1" fill="rgba(0,80,30,.35)"/>
+          <rect x="19" y="65" width="12" height="2" rx="1" fill="rgba(0,80,30,.35)"/>
+          <path d="M35,72 Q55,48 75,72 Z" fill="white"/>
+          <rect x="34" y="72" width="42" height="13" rx="2" fill="white"/>
+          <circle cx="55" cy="37" r="7" fill="white"/>
+          <circle cx="58.5" cy="35.5" r="5.5" fill="#1A6B3A"/>
+        </svg>
+        <div class="brand-text">
+          Hadj Lottery
+          <div class="brand-sub">Espace Administrateur</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-title">Gestion</div>
+        <a href="tirages.html" class="sidebar-link">
+          <span class="icon">🎰</span> Gérer les tirages
+        </a>
+        <a href="users.html" class="sidebar-link">
+          <span class="icon">👥</span> Utilisateurs
+        </a>
+        <a href="demandes.html" class="sidebar-link active">
+          <span class="icon">📋</span> Nouvelles demandes
+          <span class="badge badge-danger" id="sidebar-count" style="margin-left:auto; font-size:.7rem;"></span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="avatar">AD</div>
+          <div class="user-info">
+            <div class="name">Administrateur</div>
+            <div class="role">Admin système</div>
+          </div>
+        </div>
+        <a href="../api/logout.php" class="sidebar-logout">🚪 Se déconnecter</a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dashboard-main">
+
+      <div class="topbar">
+        <div class="topbar-title">
+          <h3>Nouvelles demandes</h3>
+          <p>Demandes d'inscription en attente de validation</p>
+        </div>
+      </div>
+
+      <div class="page-content">
+
+        <!-- Empty state -->
+        <div id="empty-state" class="card hidden">
+          <div class="card-body" style="text-align:center; padding:60px 20px;">
+            <p style="font-size:2rem; margin-bottom:12px;">📭</p>
+            <p style="color:var(--text-secondary);">Aucune demande en attente.</p>
+          </div>
+        </div>
+
+        <!-- Demandes table -->
+        <div class="card" id="demandes-card">
+          <div class="card-header">
+            <h4>Demandes en attente</h4>
+            <span class="badge badge-warning" id="count-badge"></span>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Nom complet</th>
+                    <th>NIN</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Date de soumission</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="demandes-tbody">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL : Détails de la demande -->
+  <div class="modal-overlay hidden" id="detail-modal">
+    <div class="modal" style="max-width:560px;">
+      <div class="modal-header">
+        <h4>Détails de la demande</h4>
+        <button class="modal-close" onclick="closeDetail()">✕</button>
+      </div>
+      <div class="modal-body" id="detail-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeDetail()">Fermer</button>
+        <button class="btn btn-secondary" id="detail-ignore-btn">Ignorer</button>
+        <button class="btn btn-danger" id="detail-block-btn">🚫 Bloquer</button>
+        <button class="btn btn-success" id="detail-validate-btn">✅ Valider</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL : Confirmation blocage -->
+  <div class="modal-overlay hidden" id="block-modal">
+    <div class="modal" style="max-width:440px;">
+      <div class="modal-header">
+        <h4>Bloquer l'utilisateur</h4>
+        <button class="modal-close" onclick="closeBlockModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger">
+          ⚠️ La demande sera refusée et l'utilisateur sera <strong>bloqué</strong>. Il ne pourra plus s'inscrire.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeBlockModal()">Annuler</button>
+        <button class="btn btn-danger" onclick="confirmBlock()">🚫 Confirmer le blocage</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div class="hidden" id="toast-validate"
+    style="position:fixed; bottom:24px; right:24px; background:var(--success); color:white;
+           padding:16px 24px; border-radius:var(--radius); box-shadow:var(--shadow-lg);
+           font-size:.9rem; font-weight:600; z-index:1000;">
+    ✅ Demande validée — utilisateur inscrit.
+  </div>
+  <div class="hidden" id="toast-ignore"
+    style="position:fixed; bottom:24px; right:24px; background:var(--text-secondary); color:white;
+           padding:16px 24px; border-radius:var(--radius); box-shadow:var(--shadow-lg);
+           font-size:.9rem; font-weight:600; z-index:1000;">
+    Demande ignorée.
+  </div>
+  <div class="hidden" id="toast-block"
+    style="position:fixed; bottom:24px; right:24px; background:var(--danger); color:white;
+           padding:16px 24px; border-radius:var(--radius); box-shadow:var(--shadow-lg);
+           font-size:.9rem; font-weight:600; z-index:1000;">
+    🚫 Utilisateur bloqué.
+  </div>
+
+
+  <script src="../js/demandes.js"></script>
+
+</body>
+</html>

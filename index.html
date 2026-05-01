@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="sanctuaire">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plateforme Hadj — Tirage au Sort</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/themes.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+
+   /* ce que contient la page principale*/
+
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+                  url('photo mecque.jpg') no-repeat center center !important;
+      background-size: cover !important;
+    }
+    
+    .nav-icon-link {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius);
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-icon-link:hover {
+      background: var(--primary-bg);
+      color: var(--primary);
+    }
+    /* style des icones-_*/
+    .nav-icon-link::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: var(--text);
+      color: #fff;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      padding: 5px 10px;
+      border-radius: 6px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    
+    .nav-icon-link:hover::after {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barre de navigation -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand"> <!-- Creation du logo -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32" style="flex-shrink:0">
+          <defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DAA65"/><stop offset="100%" stop-color="#0D5A30"/></linearGradient></defs>
+          <rect x="16" y="16" width="68" height="68" rx="13" fill="url(#mg)"/>
+          <rect x="16" y="16" width="68" height="68" rx="13" fill="url(#mg)" transform="rotate(45,50,50)"/>
+          <rect x="20" y="46" width="10" height="38" rx="3" fill="white"/>
+          <polygon points="25,35 19,46 31,46" fill="white"/>
+          <rect x="19" y="55" width="12" height="2" rx="1" fill="rgba(0,80,30,.35)"/>
+          <rect x="19" y="65" width="12" height="2" rx="1" fill="rgba(0,80,30,.35)"/>
+          <path d="M35,72 Q55,48 75,72 Z" fill="white"/>
+          <rect x="34" y="72" width="42" height="13" rx="2" fill="white"/>
+          <circle cx="55" cy="37" r="7" fill="white"/>
+          <circle cx="58.5" cy="35.5" r="5.5" fill="#1A6B3A"/>
+        </svg>
+        <span>Hadj Lottery</span>
+      </a> <!-- Liens des icones -->
+      <div class="navbar-links">
+        <a href="#pourquoi" class="nav-icon-link" data-tooltip="Pourquoi cette plateforme ?">
+          <i class="fas fa-lightbulb"></i>
+        </a>
+        <a href="#regles" class="nav-icon-link" data-tooltip="Règles de la plateforme">
+          <i class="fas fa-clipboard-list"></i>
+        </a>
+        <a href="#comment" class="nav-icon-link" data-tooltip="Comment ça marche ?">
+          <i class="fas fa-circle-question"></i>
+        </a>
+        <a href="register.html" class="btn btn-primary btn-sm">S'inscrire</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Presentation de la surface visuelle -->
+  <section class="hero">
+    <h1>Plateforme de Tirage au Sort<br>pour le Hadj</h1>
+    <p>
+      Gérez votre candidature pour le pèlerinage de manière transparente,
+      équitable et sécurisée. Inscrivez-vous et participez au tirage officiel.
+    </p>
+    <div class="hero-btns"> 
+      <a href="login.html" class="btn btn-white btn-lg">Connexion</a>
+      <a href="results.html" class="btn btn-white btn-lg">Voir les résultats</a>
+    </div>
+  </section>
+
+  <!-- Description de la plateforme -->
+  <section id="pourquoi" class="section section-alt">
+    <div class="container">
+      <div class="section-title">
+        <h2>Pourquoi cette plateforme ?</h2>
+        <p>Une solution officielle pour gérer le tirage au sort du Hadj de façon juste et transparente.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚖️</div>
+          <h4>Équitable</h4>
+          <p>Le système garantit une égalité des chances pour tous les candidats inscrits et éligibles.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h4>Sécurisé</h4>
+          <p>Vos données personnelles sont protégées. Chaque compte est validé par un administrateur.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔔</div>
+          <h4>Notifié</h4>
+          <p>Recevez des notifications par email et sur la plateforme à chaque étape importante.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h4>Transparent</h4>
+          <p>Les résultats de chaque tirage sont publiés et consultables par tous.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Regles -->
+  <section id="regles" class="section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Règles de la plateforme</h2>
+        <p>Lisez attentivement les conditions d'inscription et de participation avant de vous inscrire.</p>
+      </div>
+      <div class="rules-grid">
+
+        <!-- Règles d'inscription -->
+        <div class="rules-box">
+          <div class="rules-box-header">
+            <span>📝</span>
+            <h3>Conditions d'inscription</h3>
+          </div>
+          <div class="rules-box-body">
+            <ul class="rules-list">
+              <li class="rule-item">
+                <div class="rule-num">1</div>
+                <p class="rule-text">Remplir le formulaire d'inscription avec des informations exactes et complètes.</p>
+              </li>
+              <li class="rule-item">
+                <div class="rule-num">2</div>
+                <p class="rule-text">Votre compte doit être approuvé par un administrateur avant de pouvoir vous connecter.</p>
+              </li>
+              <li class="rule-item">
+                <div class="rule-num">3</div>
+                <p class="rule-text">Avoir au moins 18 ans à la date du tirage pour pouvoir participer.</p>
+              </li>
+              <li class="rule-item">
+                <div class="rule-num">4</div>
+                <p class="rule-text">Un seul compte par numéro d'identification national (NIN).</p>
+              </li>
+              <li class="rule-item">
+                <div class="rule-num">5</div>
+                <p class="rule-text">Tout compte dont les informations sont erronées peut être bloqué ou supprimé.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Règles du tirage -->
+        <div class="rules-box">
+          <div class="rules-box-header">
+            <span>🏆</span>
+            <h3>Règles du tirage</h3>
+          </div>
+          <div class="rules-box-body">
+            <ul class="rules-list">
+              <li class="rule-item">
+                <div class="rule-num">1</div>
+                <p class="rule-text">Les inscriptions doivent être ouvertes pour participer au tirage en cours.</p>
+              </li>
+              <li class="rule-item">
+                <div class="rule-num">2</div>
+                <p class="rule-text">Un gagnant ne peut pas participer aux 5 tirages suivants.</p>
+              </li>
+              <li class="rule-item">
+                <div class="rule-num">3</div>
+                <p class="rule-text">Un candidat non sélectionné voit ses chances augmenter à chaque participation infructueuse.</p>
+              </li>
+              <li class="rule-item">
+                <div class="rule-num">4</div>
+                <p class="rule-text">Le tirage est lancé par l'administrateur le jour de la date prévue.</p>
+              </li>
+              <li class="rule-item">
+                <div class="rule-num">5</div>
+                <p class="rule-text">Les résultats sont publiés sur la plateforme et envoyés par email aux gagnants.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Comment ca fonctionne -->
+  <section id="comment" class="section section-alt">
+    <div class="container">
+      <div class="section-title">
+        <h2>Comment ça fonctionne ?</h2>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#E6F4EF; color:#3D9970;">1</div>
+          <h4>Créez votre compte</h4>
+          <p>Remplissez le formulaire d'inscription avec toutes vos informations personnelles.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#FDF3E3; color:#D4890A;">2</div>
+          <h4>Attendez la validation</h4>
+          <p>Un administrateur vérifie et approuve votre compte avant activation.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#EAF4FB; color:#2980B9;">3</div>
+          <h4>Inscrivez-vous au tirage</h4>
+          <p>Quand les inscriptions sont ouvertes, candidatez au tirage actif.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--primary-bg); color:var(--primary);">4</div>
+          <h4>Consultez les résultats</h4>
+          <p>Le jour du tirage, vous serez notifié et les résultats seront publiés en ligne.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Style du bouton du retour a l'accueil -->
+  <a href="#" id="back-to-top" title="Retour à l'accueil">↑</a>
+  <style>
+    #back-to-top {
+      position: fixed;
+      top: 80px;
+      right: 24px;
+      background: var(--primary);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s, transform .25s;
+      transform: translateY(-8px);
+      z-index: 500;
+      text-decoration: none;
+    }
+    #back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    #back-to-top:hover {
+      background: var(--primary-dark);
+    }
+  </style>
+  <style>
+    #back-to-top {
+      position: fixed;
+      top: 80px;
+      right: 24px;
+      background: var(--primary);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s, transform .25s;
+      transform: translateY(-8px);
+      z-index: 500;
+      text-decoration: none;
+    }
+    #back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    #back-to-top:hover {
+      background: var(--primary-dark);
+    }
+  </style>
+
+
+
+  <script src="js/index.js"></script>
+</body>
+</html>

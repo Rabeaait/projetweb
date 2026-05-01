@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="sanctuaire">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gérer les tirages — Hadj Lottery</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/themes.css" />
+  <style>
+    .tirage-actif-card {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      color: white;
+      margin-bottom: 28px;
+    }
+    .tirage-actif-card h3 { color: white; font-size: 1.3rem; margin-bottom: 6px; }
+    .tirage-actif-card .sub { color: rgba(255,255,255,.7); font-size: 0.875rem; margin-bottom: 28px; }
+
+    .tirage-info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .tirage-info-box { background: rgba(255,255,255,.12); border-radius: var(--radius); padding: 16px 20px; }
+    .tirage-info-box .label {
+      font-size: 0.75rem; color: rgba(255,255,255,.65);
+      text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px;
+    }
+    .tirage-info-box .val { font-size: 1.1rem; font-weight: 700; color: white; }
+    .tirage-actions { display: flex; gap: 12px; }
+
+    .btn-white-solid {
+      background: white; color: var(--primary-dark); border: none;
+      padding: 10px 20px; border-radius: var(--radius);
+      font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: opacity .2s;
+    }
+    .btn-white-solid:hover { opacity: .9; }
+    .btn-white-solid:disabled { opacity: .5; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="38" height="38" style="flex-shrink:0">
+          <defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DAA65"/><stop offset="100%" stop-color="#0D5A30"/></linearGradient></defs>
+          <rect x="16" y="16" width="68" height="68" rx="13" fill="url(#mg)"/>
+          <rect x="16" y="16" width="68" height="68" rx="13" fill="url(#mg)" transform="rotate(45,50,50)"/>
+          <rect x="20" y="46" width="10" height="38" rx="3" fill="white"/>
+          <polygon points="25,35 19,46 31,46" fill="white"/>
+          <rect x="19" y="55" width="12" height="2" rx="1" fill="rgba(0,80,30,.35)"/>
+          <rect x="19" y="65" width="12" height="2" rx="1" fill="rgba(0,80,30,.35)"/>
+          <path d="M35,72 Q55,48 75,72 Z" fill="white"/>
+          <rect x="34" y="72" width="42" height="13" rx="2" fill="white"/>
+          <circle cx="55" cy="37" r="7" fill="white"/>
+          <circle cx="58.5" cy="35.5" r="5.5" fill="#1A6B3A"/>
+        </svg>
+        <div class="brand-text">
+          Hadj Lottery
+          <div class="brand-sub">Espace Administrateur</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-title">Gestion</div>
+        <a href="tirages.html" class="sidebar-link active">
+          <span class="icon">🎰</span> Gérer les tirages
+        </a>
+        <a href="users.html" class="sidebar-link">
+          <span class="icon">👥</span> Utilisateurs
+        </a>
+        <a href="demandes.html" class="sidebar-link">
+          <span class="icon">📋</span> Nouvelles demandes
+          <span class="badge badge-danger" id="sidebar-count" style="margin-left:auto; font-size:.7rem;"></span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="avatar">AD</div>
+          <div class="user-info">
+            <div class="name">Administrateur</div>
+            <div class="role">Admin système</div>
+          </div>
+        </div>
+        <a href="../api/logout.php" class="sidebar-logout">🚪 Se déconnecter</a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dashboard-main">
+
+      <div class="topbar">
+        <div class="topbar-title">
+          <h3>Gérer les tirages</h3>
+          <p>Tirage en cours et création d'un nouveau tirage</p>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary btn-sm" onclick="openCreateModal()">+ Nouveau tirage</button>
+        </div>
+      </div>
+
+      <div class="page-content">
+
+        <!-- TIRAGE EN COURS -->
+        <div class="tirage-actif-card">
+          <h3 id="tirage-titre">Hadj 2027 — Tirage en cours</h3>
+          <p class="sub" id="tirage-sous-titre">Inscriptions ouvertes</p>
+
+          <div class="tirage-info-grid">
+            <div class="tirage-info-box">
+              <div class="label">Nombre de gagnants</div>
+              <div class="val" id="val-gagnants">500</div>
+            </div>
+            <div class="tirage-info-box">
+              <div class="label">Ouverture des inscriptions</div>
+              <div class="val" id="val-ouverture">01 oct. 2026</div>
+            </div>
+            <div class="tirage-info-box">
+              <div class="label">Clôture des inscriptions</div>
+              <div class="val" id="val-cloture">06 nov. 2026</div>
+            </div>
+            <div class="tirage-info-box">
+              <div class="label">Date du tirage</div>
+              <div class="val" id="val-date-tirage">21 nov. 2026</div>
+            </div>
+            <div class="tirage-info-box">
+              <div class="label">Participants inscrits</div>
+              <div class="val" id="val-participants">—</div>
+            </div>
+            <div class="tirage-info-box">
+              <div class="label">Statut</div>
+              <div class="val" id="val-statut">Inscriptions ouvertes</div>
+            </div>
+          </div>
+
+          <div class="tirage-actions">
+            <button class="btn-white-solid" id="btn-lancer" onclick="lancerTirage()">
+              Lancer le processus de sélection
+            </button>
+          </div>
+        </div>
+
+        <!-- HISTORIQUE -->
+        <div class="card">
+          <div class="card-header">
+            <h4>Historique des tirages</h4>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tirage</th>
+                    <th>Date du tirage</th>
+                    <th>Inscriptions</th>
+                    <th>Participants</th>
+                    <th>Gagnants</th>
+                    <th>Statut</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Hadj 2026</strong></td>
+                    <td>22 nov. 2025</td>
+                    <td>01 oct. – 06 nov. 2025</td>
+                    <td>12 543</td>
+                    <td>500</td>
+                    <td><span class="badge badge-neutral">Terminé</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Hadj 2025</strong></td>
+                    <td>09 nov. 2024</td>
+                    <td>01 oct. – 27 oct. 2024</td>
+                    <td>12 847</td>
+                    <td>500</td>
+                    <td><span class="badge badge-neutral">Terminé</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Hadj 2024</strong></td>
+                    <td>30 déc. 2023</td>
+                    <td>01 nov. – 30 nov. 2023</td>
+                    <td>10 432</td>
+                    <td>480</td>
+                    <td><span class="badge badge-neutral">Terminé</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Hadj 2023</strong></td>
+                    <td>15 avr. 2023</td>
+                    <td>01 déc. – 31 déc. 2022</td>
+                    <td>9 108</td>
+                    <td>450</td>
+                    <td><span class="badge badge-neutral">Terminé</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Hadj 2022</strong></td>
+                    <td>10 mai 2022</td>
+                    <td>01 mars – 30 mars 2022</td>
+                    <td>8 754</td>
+                    <td>420</td>
+                    <td><span class="badge badge-neutral">Terminé</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL : Créer un nouveau tirage -->
+  <div class="modal-overlay hidden" id="create-modal">
+    <div class="modal" style="max-width:520px;">
+      <div class="modal-header">
+        <h4>Créer un nouveau tirage</h4>
+        <button class="modal-close" onclick="closeCreateModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-warning mb-24" id="create-warning" style="display:none;">
+          ⚠️ Un tirage actif existe déjà. Clôturez-le avant d'en créer un nouveau.
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nombre de gagnants <span class="required">*</span></label>
+          <input type="number" id="nb-gagnants" class="form-control" placeholder="Ex : 500" min="1" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date du tirage <span class="required">*</span></label>
+          <input type="date" id="date-tirage" class="form-control" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Ouverture des inscriptions <span class="required">*</span></label>
+            <input type="date" id="date-ouverture" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Clôture des inscriptions <span class="required">*</span></label>
+            <input type="date" id="date-cloture" class="form-control" />
+          </div>
+        </div>
+        <div class="alert alert-danger hidden" id="create-error"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeCreateModal()">Annuler</button>
+        <button class="btn btn-primary" onclick="creerTirage()">Créer le tirage</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL : Lancer le tirage -->
+  <div class="modal-overlay hidden" id="lancer-modal">
+    <div class="modal" style="max-width:480px;">
+      <div class="modal-header">
+        <h4>Lancer le processus de sélection</h4>
+        <button class="modal-close" onclick="closeLancerModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger">
+          ⚠️ Cette action est <strong>irréversible</strong>. Le tirage au sort va être lancé.
+          Les gagnants seront sélectionnés aléatoirement parmi les inscrits éligibles (≥ 18 ans).
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeLancerModal()">Annuler</button>
+        <button class="btn btn-danger" onclick="confirmerLancement()">Confirmer le lancement</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div class="hidden" id="toast-create"
+    style="position:fixed;bottom:24px;right:24px;background:var(--success);color:white;
+           padding:16px 24px;border-radius:var(--radius);box-shadow:var(--shadow-lg);
+           font-size:.9rem;font-weight:600;z-index:1000;">
+    ✅ Nouveau tirage créé avec succès.
+  </div>
+  <div class="hidden" id="toast-lancer"
+    style="position:fixed;bottom:24px;right:24px;background:var(--primary-dark);color:white;
+           padding:16px 24px;border-radius:var(--radius);box-shadow:var(--shadow-lg);
+           font-size:.9rem;font-weight:600;z-index:1000;">
+    🏆 Tirage lancé.
+  </div>
+
+
+  <script src="../js/admin/tirages.js"></script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="sanctuaire">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inscription — Hadj Lottery</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/themes.css" />
+  <style>
+    .register-layout {
+      min-height: 100vh;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .register-container {
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .register-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .register-header .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 12px;
+    }
+
+    .register-header .brand .icon {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .register-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .register-card-header {
+      padding: 28px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .register-card-body {
+      padding: 32px;
+    }
+
+    /* Panneaux d'étapes */
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+
+    .step-panel h4 {
+      color: var(--text);
+      margin-bottom: 6px;
+      font-size: 1rem;
+    }
+
+    .step-panel .step-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .step-form { display: flex; flex-direction: column; gap: 18px; }
+
+    .register-card-footer {
+      padding: 20px 32px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .step-indicator {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    /* Force du mot de passe */
+    .password-strength {
+      display: flex;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .strength-bar {
+      height: 4px;
+      flex: 1;
+      border-radius: 2px;
+      background: var(--border);
+      transition: background .2s;
+    }
+
+    .strength-bar.weak   { background: var(--danger); }
+    .strength-bar.medium { background: var(--warning); }
+    .strength-bar.strong { background: var(--success); }
+
+    .strength-label {
+      font-size: 0.75rem;
+      margin-top: 4px;
+    }
+
+    /* Écran de succès */
+    .success-screen {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .success-screen .success-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+
+    .success-screen h3 { margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+
+  <div class="register-layout">
+    <div class="register-container">
+
+      <!-- En-tête -->
+      <div class="register-header">
+        <a href="index.html" class="brand">
+          <div class="icon">🕌</div>
+          Hadj Lottery
+        </a>
+        <h2>Créer un compte</h2>
+        <p style="color:var(--text-secondary); font-size:.9rem;">
+          Remplissez le formulaire ci-dessous. Votre compte sera activé après validation par un administrateur.
+        </p>
+      </div>
+
+      <!-- Carte du formulaire -->
+      <div class="register-card">
+
+
+        <div class="register-card-body">
+
+          <!-- Étape 1 : Identité -->
+          <div class="step-panel active" id="panel-1">
+            <h4>Informations d'identité</h4>
+            <p class="step-desc">Renseignez votre identité civile telle qu'elle figure sur votre document officiel.</p>
+            <div class="step-form">
+
+              <div class="form-group">
+                <label class="form-label" for="nin">
+                  Numéro d'Identification National (NIN) <span class="required">*</span>
+                </label>
+                <input type="text" id="nin" name="nin" class="form-control"
+                  placeholder="Ex: 198500123456789" maxlength="18" required />
+                <span class="form-hint">18 chiffres — figurant sur votre carte nationale d'identité.</span>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="nom">
+                    Nom (Famille) <span class="required">*</span>
+                  </label>
+                  <input type="text" id="nom" name="nom" class="form-control"
+                    placeholder="Votre nom de famille" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prenom">
+                    Prénom <span class="required">*</span>
+                  </label>
+                  <input type="text" id="prenom" name="prenom" class="form-control"
+                    placeholder="Votre prénom" required />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="ddn">
+                  Date de naissance <span class="required">*</span>
+                </label>
+                <input type="date" id="ddn" name="date_naissance" class="form-control" required />
+                <span class="form-hint">Vous devez avoir au moins 18 ans à la date du tirage.</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Étape 2 : Famille -->
+          <div class="step-panel" id="panel-2">
+            <h4>Informations familiales</h4>
+            <p class="step-desc">Renseignez les informations relatives à votre famille (telles qu'elles apparaissent sur votre acte de naissance).</p>
+            <div class="step-form">
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="nom_pere">
+                    Prénom du père <span class="required">*</span>
+                  </label>
+                  <input type="text" id="nom_pere" name="nom_pere" class="form-control"
+                    placeholder="Prénom du père" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="nom_grand_pere">
+                    Prénom du grand-père <span class="required">*</span>
+                  </label>
+                  <input type="text" id="nom_grand_pere" name="nom_grand_pere" class="form-control"
+                    placeholder="Prénom du grand-père" required />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="prenom_mere">
+                    Prénom de la mère <span class="required">*</span>
+                  </label>
+                  <input type="text" id="prenom_mere" name="prenom_mere" class="form-control"
+                    placeholder="Prénom de la mère" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="nom_mere">
+                    Nom de famille de la mère <span class="required">*</span>
+                  </label>
+                  <input type="text" id="nom_mere" name="nom_mere" class="form-control"
+                    placeholder="Nom de famille de la mère" required />
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Étape 3 : Coordonnées -->
+          <div class="step-panel" id="panel-3">
+            <h4>Coordonnées</h4>
+            <p class="step-desc">Renseignez vos coordonnées personnelles. Votre email sera utilisé pour les notifications.</p>
+            <div class="step-form">
+
+              <div class="form-group">
+                <label class="form-label" for="adresse">
+                  Adresse physique <span class="required">*</span>
+                </label>
+                <input type="text" id="adresse" name="adresse" class="form-control"
+                  placeholder="Numéro, rue, commune, wilaya" required />
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="email_reg">
+                    Adresse email <span class="required">*</span>
+                  </label>
+                  <input type="email" id="email_reg" name="email" class="form-control"
+                    placeholder="exemple@email.com" required />
+                  <span class="form-hint">Utilisée pour les notifications et la connexion.</span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="telephone">
+                    Numéro de téléphone <span class="required">*</span>
+                  </label>
+                  <input type="tel" id="telephone" name="telephone" class="form-control"
+                    placeholder="05XXXXXXXX" required />
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Étape 4 : Sécurité -->
+          <div class="step-panel" id="panel-4">
+            <h4>Sécurité du compte</h4>
+            <p class="step-desc">Choisissez un mot de passe sécurisé. Il doit contenir au moins 8 caractères.</p>
+            <div class="step-form">
+
+              <div class="form-group">
+                <label class="form-label" for="password_reg">
+                  Mot de passe <span class="required">*</span>
+                </label>
+                <input type="password" id="password_reg" name="password" class="form-control"
+                  placeholder="Minimum 8 caractères" required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="password_confirm">
+                  Confirmer le mot de passe <span class="required">*</span>
+                </label>
+                <input type="password" id="password_confirm" name="password_confirm" class="form-control"
+                  placeholder="Répétez votre mot de passe" required />
+                <span class="form-error hidden" id="pass-mismatch">Les mots de passe ne correspondent pas.</span>
+              </div>
+
+              <div class="form-group">
+                <label style="display:flex; gap:10px; align-items:flex-start; cursor:pointer; font-size:.875rem;">
+                  <input type="checkbox" name="accept_terms" required style="margin-top:3px; flex-shrink:0;" />
+                  <span style="color:var(--text-secondary);">
+                    J'accepte les
+                    <a href="#" style="color:var(--primary);">conditions d'utilisation</a>
+                    et la
+                    <a href="#" style="color:var(--primary);">politique de confidentialité</a>
+                    de la plateforme.
+                  </span>
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Écran de succès (caché initialement) -->
+          <div class="step-panel" id="panel-success">
+            <div class="success-screen">
+              <div class="success-icon">✅</div>
+              <h3>Compte créé avec succès !</h3>
+              <p style="max-width:400px; margin:0 auto 24px;">
+                Votre demande a bien été enregistrée. Un administrateur va vérifier vos informations
+                et activer votre compte sous peu. Vous recevrez un email de confirmation.
+              </p>
+              <div class="d-flex gap-12 justify-content: center;" style="justify-content:center;">
+                <a href="login.html" class="btn btn-primary">Se connecter</a>
+                <a href="index.html" class="btn btn-ghost">Retour à l'accueil</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Navigation bas de page -->
+        <div class="register-card-footer" id="card-footer">
+          <div class="step-indicator" id="step-counter">Étape 1 sur 4</div>
+          <div class="d-flex gap-12">
+            <button type="button" class="btn btn-ghost hidden" id="btn-prev" onclick="prevStep()">
+              ← Précédent
+            </button>
+            <button type="button" class="btn btn-primary" id="btn-next" onclick="nextStep()">
+              Suivant →
+            </button>
+            <button type="submit" class="btn btn-success hidden" id="btn-submit" form="register-form" onclick="submitForm()">
+              ✅ Soumettre l'inscription
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="mt-16 text-center" style="font-size:.85rem; color:var(--text-secondary);">
+        Déjà un compte ? <a href="login.html" style="color:var(--primary); font-weight:600;">Se connecter</a>
+      </p>
+
+    </div>
+  </div>
+
+
+  <script src="js/register.js"></script>
+
+</body>
+</html>

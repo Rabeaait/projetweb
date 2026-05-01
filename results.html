@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="sanctuaire">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Résultats — Hadj Lottery</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/themes.css" />
+  <style>
+    .results-hero {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      padding: 56px 24px;
+      color: white;
+      text-align: center;
+    }
+    .results-hero h1 { color: white; font-size: 2rem; margin-bottom: 10px; }
+    .results-hero p  { color: rgba(255,255,255,.8); }
+
+    .results-section { padding: 48px 24px; }
+
+    .lottery-result-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+
+    .lottery-result-header {
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background .15s;
+    }
+
+    .lottery-result-header:hover { background: var(--primary-bg); }
+
+    .lottery-result-title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .lottery-result-title .year-badge {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: white;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .lottery-result-title h4 { font-size: 1rem; color: var(--text); }
+    .lottery-result-title p  { font-size: 0.82rem; margin-top: 2px; }
+
+    .lottery-result-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .meta-item {
+      text-align: right;
+      font-size: 0.82rem;
+    }
+
+    .meta-item .meta-label { color: var(--text-secondary); }
+    .meta-item .meta-value { font-weight: 700; color: var(--text); }
+
+    .toggle-icon {
+      font-size: 1.2rem;
+      transition: transform .2s;
+      color: var(--text-secondary);
+    }
+
+    .lottery-result-body {
+      padding: 28px;
+      display: none;
+    }
+
+    .lottery-result-body.open { display: block; }
+
+    .winners-section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .winners-section-title h5 { color: var(--text); }
+
+    .no-results {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32" style="flex-shrink:0">
+          <defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DAA65"/><stop offset="100%" stop-color="#0D5A30"/></linearGradient></defs>
+          <rect x="16" y="16" width="68" height="68" rx="13" fill="url(#mg)"/>
+          <rect x="16" y="16" width="68" height="68" rx="13" fill="url(#mg)" transform="rotate(45,50,50)"/>
+          <rect x="20" y="46" width="10" height="38" rx="3" fill="white"/>
+          <polygon points="25,35 19,46 31,46" fill="white"/>
+          <rect x="19" y="55" width="12" height="2" rx="1" fill="rgba(0,80,30,.35)"/>
+          <rect x="19" y="65" width="12" height="2" rx="1" fill="rgba(0,80,30,.35)"/>
+          <path d="M35,72 Q55,48 75,72 Z" fill="white"/>
+          <rect x="34" y="72" width="42" height="13" rx="2" fill="white"/>
+          <circle cx="55" cy="37" r="7" fill="white"/>
+          <circle cx="58.5" cy="35.5" r="5.5" fill="#1A6B3A"/>
+        </svg>
+        <span>Hadj Lottery</span>
+      </a>
+      <div class="navbar-links">
+        <a href="index.html">← Revenir à l'accueil</a>
+        <a href="login.html" class="btn btn-outline btn-sm">Connexion</a>
+        <a href="register.html" class="btn btn-primary btn-sm">S'inscrire</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="results-hero">
+    <h1>🏆 Résultats des Tirages</h1>
+    <p>Consultez les résultats de tous les tirages au sort officiels.</p>
+  </div>
+
+  <!-- RESULTS SECTION -->
+  <section class="results-section">
+    <div class="container">
+
+      <!-- Search -->
+      <div class="results-filter" style="margin-bottom:28px;">
+        <span style="font-size:.9rem; font-weight:600; color:var(--text);">Rechercher :</span>
+        <input type="number" id="year-search" class="form-control" style="max-width:160px;"
+               placeholder="Ex : 2025" min="2020" max="2030" />
+      </div>
+      <div id="no-results-msg" style="display:none; text-align:center; padding:40px; color:var(--text-secondary);">
+        Aucun résultat trouvé pour cette année.
+      </div>
+
+      <!-- LOTTERY 2026 -->
+      <div class="lottery-result-card" data-year="2026">
+        <div class="lottery-result-header" onclick="toggleResult(this)">
+          <div class="lottery-result-title">
+            <div class="year-badge">Hadj<br>2026</div>
+            <div>
+              <h4>Tirage Hadj 2026</h4>
+              <p>Date du tirage : 22 novembre 2025 &nbsp;·&nbsp; <span class="badge badge-neutral">Terminé</span></p>
+            </div>
+          </div>
+          <div class="lottery-result-meta">
+            <div class="meta-item">
+              <div class="meta-label">Participants</div>
+              <div class="meta-value">12 543</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Gagnants</div>
+              <div class="meta-value">500</div>
+            </div>
+            <div class="toggle-icon">▼</div>
+          </div>
+        </div>
+        <div class="lottery-result-body">
+          <div class="no-results">La liste complète est disponible auprès des services compétents.</div>
+        </div>
+      </div>
+
+      <!-- LOTTERY 2025 -->
+      <div class="lottery-result-card" data-year="2025">
+        <div class="lottery-result-header" onclick="toggleResult(this)">
+          <div class="lottery-result-title">
+            <div class="year-badge">Hadj<br>2025</div>
+            <div>
+              <h4>Tirage Hadj 2025</h4>
+              <p>Date du tirage : 09 novembre 2024 &nbsp;·&nbsp; <span class="badge badge-neutral">Terminé</span></p>
+            </div>
+          </div>
+          <div class="lottery-result-meta">
+            <div class="meta-item">
+              <div class="meta-label">Participants</div>
+              <div class="meta-value">12 847</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Gagnants</div>
+              <div class="meta-value">500</div>
+            </div>
+            <div class="toggle-icon">▼</div>
+          </div>
+        </div>
+        <div class="lottery-result-body">
+          <div class="no-results">La liste complète est disponible auprès des services compétents.</div>
+        </div>
+      </div>
+
+      <!-- LOTTERY 2024 -->
+      <div class="lottery-result-card" data-year="2024">
+        <div class="lottery-result-header" onclick="toggleResult(this)">
+          <div class="lottery-result-title">
+            <div class="year-badge">Hadj<br>2024</div>
+            <div>
+              <h4>Tirage Hadj 2024</h4>
+              <p>Date du tirage : 30 décembre 2023 &nbsp;·&nbsp; <span class="badge badge-neutral">Terminé</span></p>
+            </div>
+          </div>
+          <div class="lottery-result-meta">
+            <div class="meta-item">
+              <div class="meta-label">Participants</div>
+              <div class="meta-value">10 432</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Gagnants</div>
+              <div class="meta-value">480</div>
+            </div>
+            <div class="toggle-icon">▼</div>
+          </div>
+        </div>
+        <div class="lottery-result-body">
+          <div class="no-results">La liste complète est disponible auprès des services compétents.</div>
+        </div>
+      </div>
+
+      <!-- LOTTERY 2023 -->
+      <div class="lottery-result-card" data-year="2023">
+        <div class="lottery-result-header" onclick="toggleResult(this)">
+          <div class="lottery-result-title">
+            <div class="year-badge">Hadj<br>2023</div>
+            <div>
+              <h4>Tirage Hadj 2023</h4>
+              <p>Date du tirage : 15 avril 2023 &nbsp;·&nbsp; <span class="badge badge-neutral">Terminé</span></p>
+            </div>
+          </div>
+          <div class="lottery-result-meta">
+            <div class="meta-item">
+              <div class="meta-label">Participants</div>
+              <div class="meta-value">9 108</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Gagnants</div>
+              <div class="meta-value">450</div>
+            </div>
+            <div class="toggle-icon">▼</div>
+          </div>
+        </div>
+        <div class="lottery-result-body">
+          <div class="no-results">La liste complète est disponible auprès des services compétents.</div>
+        </div>
+      </div>
+
+      <!-- LOTTERY 2022 -->
+      <div class="lottery-result-card" data-year="2022">
+        <div class="lottery-result-header" onclick="toggleResult(this)">
+          <div class="lottery-result-title">
+            <div class="year-badge">Hadj<br>2022</div>
+            <div>
+              <h4>Tirage Hadj 2022</h4>
+              <p>Date du tirage : 10 mai 2022 &nbsp;·&nbsp; <span class="badge badge-neutral">Terminé</span></p>
+            </div>
+          </div>
+          <div class="lottery-result-meta">
+            <div class="meta-item">
+              <div class="meta-label">Participants</div>
+              <div class="meta-value">8 754</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Gagnants</div>
+              <div class="meta-value">420</div>
+            </div>
+            <div class="toggle-icon">▼</div>
+          </div>
+        </div>
+        <div class="lottery-result-body">
+          <div class="no-results">La liste complète est disponible auprès des services compétents.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+
+  <script src="js/results.js"></script>
+</body>
+</html>

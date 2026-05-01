@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="sanctuaire">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestion Utilisateurs — Hadj Lottery</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/themes.css" />
+  <style>
+    .user-avatar-sm {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white; font-size: 0.78rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .user-cell { display: flex; align-items: center; gap: 12px; }
+    .user-cell .name  { font-weight: 600; font-size: .9rem; color: var(--text); }
+    .user-cell .email { font-size: .78rem; color: var(--text-secondary); }
+    .filters-bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .search-input { flex: 1; min-width: 200px; max-width: 320px; }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="38" height="38" style="flex-shrink:0">
+          <defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DAA65"/><stop offset="100%" stop-color="#0D5A30"/></linearGradient></defs>
+          <rect x="16" y="16" width="68" height="68" rx="13" fill="url(#mg)"/>
+          <rect x="16" y="16" width="68" height="68" rx="13" fill="url(#mg)" transform="rotate(45,50,50)"/>
+          <rect x="20" y="46" width="10" height="38" rx="3" fill="white"/>
+          <polygon points="25,35 19,46 31,46" fill="white"/>
+          <rect x="19" y="55" width="12" height="2" rx="1" fill="rgba(0,80,30,.35)"/>
+          <rect x="19" y="65" width="12" height="2" rx="1" fill="rgba(0,80,30,.35)"/>
+          <path d="M35,72 Q55,48 75,72 Z" fill="white"/>
+          <rect x="34" y="72" width="42" height="13" rx="2" fill="white"/>
+          <circle cx="55" cy="37" r="7" fill="white"/>
+          <circle cx="58.5" cy="35.5" r="5.5" fill="#1A6B3A"/>
+        </svg>
+        <div class="brand-text">
+          Hadj Lottery
+          <div class="brand-sub">Espace Administrateur</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-title">Gestion</div>
+        <a href="tirages.html" class="sidebar-link"><span class="icon">🎰</span> Gérer les tirages</a>
+        <a href="users.html" class="sidebar-link active"><span class="icon">👥</span> Utilisateurs</a>
+        <a href="demandes.html" class="sidebar-link">
+          <span class="icon">📋</span> Nouvelles demandes
+          <span class="badge badge-danger" id="sidebar-count" style="margin-left:auto; font-size:.7rem;"></span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="avatar">AD</div>
+          <div class="user-info">
+            <div class="name">Administrateur</div>
+            <div class="role">Admin système</div>
+          </div>
+        </div>
+        <a href="../api/logout.php" class="sidebar-logout">🚪 Se déconnecter</a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dashboard-main">
+
+      <div class="topbar">
+        <div class="topbar-title">
+          <h3>Gestion des utilisateurs</h3>
+          <p id="topbar-subtitle">Chargement…</p>
+        </div>
+      </div>
+
+      <div class="page-content">
+
+        <!-- Stats -->
+        <div class="stat-cards mb-24" style="grid-template-columns: repeat(4, 1fr);">
+          <div class="stat-card">
+            <div class="stat-card-icon blue">👥</div>
+            <div class="stat-card-info">
+              <div class="value" id="stat-total">0</div>
+              <div class="label">Total</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon green">✅</div>
+            <div class="stat-card-info">
+              <div class="value" id="stat-actifs">0</div>
+              <div class="label">Actifs</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon orange">⏳</div>
+            <div class="stat-card-info">
+              <div class="value" id="stat-attente">0</div>
+              <div class="label">En attente</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon red">🚫</div>
+            <div class="stat-card-info">
+              <div class="value" id="stat-bloques">0</div>
+              <div class="label">Bloqués</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="filters-bar">
+          <input type="text" id="search-input" class="form-control search-input"
+                 placeholder="Rechercher par nom, email ou NIN…" />
+        </div>
+
+        <!-- Table -->
+        <div class="card">
+          <div class="card-body" style="padding:0;">
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Utilisateur</th>
+                    <th>NIN</th>
+                    <th>Date de naissance</th>
+                    <th>Téléphone</th>
+                    <th>Statut</th>
+                    <th>Inscrit le</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="users-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL : Bloquer -->
+  <div class="modal-overlay hidden" id="block-modal">
+    <div class="modal" style="max-width:440px;">
+      <div class="modal-header">
+        <h4>Bloquer l'utilisateur</h4>
+        <button class="modal-close" onclick="closeBlockModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-warning">
+          ⚠️ Le compte de <strong id="block-user-name"></strong> sera bloqué.
+          Il ne pourra plus se connecter à la plateforme.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeBlockModal()">Annuler</button>
+        <button class="btn btn-warning" onclick="confirmBlock()">🔒 Confirmer le blocage</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL : Supprimer -->
+  <div class="modal-overlay hidden" id="delete-modal">
+    <div class="modal" style="max-width:440px;">
+      <div class="modal-header">
+        <h4>Supprimer le compte</h4>
+        <button class="modal-close" onclick="closeDeleteModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger">
+          ⚠️ Cette action est <strong>irréversible</strong>. Le compte de
+          <strong id="delete-user-name"></strong> sera définitivement supprimé.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeDeleteModal()">Annuler</button>
+        <button class="btn btn-danger" onclick="confirmDelete()">🗑️ Confirmer la suppression</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div class="hidden" id="toast-block"
+    style="position:fixed;bottom:24px;right:24px;background:var(--warning);color:white;
+           padding:16px 24px;border-radius:var(--radius);box-shadow:var(--shadow-lg);
+           font-size:.9rem;font-weight:600;z-index:1000;">
+    🔒 Utilisateur bloqué.
+  </div>
+  <div class="hidden" id="toast-unblock"
+    style="position:fixed;bottom:24px;right:24px;background:var(--success);color:white;
+           padding:16px 24px;border-radius:var(--radius);box-shadow:var(--shadow-lg);
+           font-size:.9rem;font-weight:600;z-index:1000;">
+    ✅ Utilisateur débloqué.
+  </div>
+  <div class="hidden" id="toast-delete"
+    style="position:fixed;bottom:24px;right:24px;background:var(--danger);color:white;
+           padding:16px 24px;border-radius:var(--radius);box-shadow:var(--shadow-lg);
+           font-size:.9rem;font-weight:600;z-index:1000;">
+    🗑️ Compte supprimé.
+  </div>
+
+
+  <script src="../js/admin/users.js"></script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="sanctuaire">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tirages disponibles — Hadj Lottery</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/themes.css" />
+</head>
+<body>
+
+  <div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="38" height="38" style="flex-shrink:0">
+          <defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DAA65"/><stop offset="100%" stop-color="#0D5A30"/></linearGradient></defs>
+          <rect x="16" y="16" width="68" height="68" rx="13" fill="url(#mg)"/>
+          <rect x="16" y="16" width="68" height="68" rx="13" fill="url(#mg)" transform="rotate(45,50,50)"/>
+          <rect x="20" y="46" width="10" height="38" rx="3" fill="white"/>
+          <polygon points="25,35 19,46 31,46" fill="white"/>
+          <rect x="19" y="55" width="12" height="2" rx="1" fill="rgba(0,80,30,.35)"/>
+          <rect x="19" y="65" width="12" height="2" rx="1" fill="rgba(0,80,30,.35)"/>
+          <path d="M35,72 Q55,48 75,72 Z" fill="white"/>
+          <rect x="34" y="72" width="42" height="13" rx="2" fill="white"/>
+          <circle cx="55" cy="37" r="7" fill="white"/>
+          <circle cx="58.5" cy="35.5" r="5.5" fill="#1A6B3A"/>
+        </svg>
+        <div class="brand-text">
+          Hadj Lottery
+          <div class="brand-sub">Espace Utilisateur</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-title">Menu principal</div>
+        <a href="actualites.html" class="sidebar-link">
+          <span class="icon">&#128240;</span> Actualités
+        </a>
+        <a href="tirages-disponibles.html" class="sidebar-link active">
+          <span class="icon">🎰</span> Tirages disponibles
+        </a>
+        <a href="profile.html" class="sidebar-link">
+          <span class="icon">👤</span> Mon profil
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="avatar" id="user-avatar">??</div>
+          <div class="user-info">
+            <div class="name" id="user-name">Chargement…</div>
+            <div class="role">Utilisateur</div>
+          </div>
+        </div>
+        <a href="../api/logout.php" class="sidebar-logout">🚪 Se déconnecter</a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dashboard-main">
+
+      <div class="topbar">
+        <div class="topbar-title">
+          <h3>Tirages disponibles</h3>
+          <p>Consultez et participez aux tirages en cours</p>
+        </div>
+        <div class="topbar-right">
+          <div class="notif-wrapper">
+            <div class="notif-btn" id="notif-btn" onclick="toggleNotif()">
+              🔔<div class="notif-dot"></div>
+            </div>
+            <div class="notif-dropdown hidden" id="notif-dropdown">
+              <div class="notif-dropdown-header">
+                <span>Notifications</span>
+              </div>
+              <div class="notif-dropdown-body">
+                <div class="notif-empty">Aucune notification pour l'instant.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-content">
+
+        <!-- TIRAGE ACTIF -->
+        <h4 style="color:var(--text); margin-bottom:16px;">Tirage actif</h4>
+
+        <div class="lottery-card" style="max-width:600px; margin-bottom:32px;">
+          <div class="lottery-card-header">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <div>
+                <span class="badge" style="background:rgba(255,255,255,.2); color:white; margin-bottom:8px;">✅ Inscriptions ouvertes</span>
+                <h4>Tirage Hadj 2026</h4>
+              </div>
+              <div class="year" style="font-size:3rem; font-weight:800; opacity:.15; line-height:1;">2026</div>
+            </div>
+          </div>
+          <div class="lottery-card-body">
+            <div class="lottery-info-row">
+              <span class="info-label">📅 Date du tirage</span>
+              <span class="info-value">15 juin 2026</span>
+            </div>
+            <div class="lottery-info-row">
+              <span class="info-label">📝 Ouverture des inscriptions</span>
+              <span class="info-value">01 avril 2026</span>
+            </div>
+            <div class="lottery-info-row">
+              <span class="info-label">🔒 Clôture des inscriptions</span>
+              <span class="info-value">30 avril 2026</span>
+            </div>
+            <div class="lottery-info-row">
+              <span class="info-label">🏆 Nombre de gagnants</span>
+              <span class="info-value">500</span>
+            </div>
+            <div class="lottery-info-row">
+              <span class="info-label">👥 Participants inscrits</span>
+              <span class="info-value" id="nb-participants">—</span>
+            </div>
+            <div class="lottery-info-row">
+              <span class="info-label">Votre statut</span>
+              <span id="statut-badge" class="badge badge-warning">Non inscrit</span>
+            </div>
+
+            <!-- Bloc éligibilité -->
+            <div id="eligibility-block" style="margin-top:16px; padding:14px; border-radius:var(--radius); border:1px solid;">
+              <p id="eligibility-title" style="font-size:.875rem; font-weight:600; margin-bottom:6px;"></p>
+              <ul id="eligibility-list" style="list-style:none; display:flex; flex-direction:column; gap:4px;"></ul>
+            </div>
+          </div>
+          <div class="lottery-card-footer">
+            <button class="btn btn-success btn-block" id="join-btn" onclick="confirmJoin()">
+              ✍️ S'inscrire à ce tirage
+            </button>
+          </div>
+        </div>
+
+        <!-- PARTICIPATIONS PASSÉES -->
+        <h4 style="color:var(--text); margin-bottom:16px;">Mes participations passées</h4>
+
+        <div class="card">
+          <div class="card-body" style="padding:0;">
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tirage</th>
+                    <th>Date d'inscription</th>
+                    <th>Date du tirage</th>
+                    <th>Statut inscriptions</th>
+                    <th>Résultat</th>
+                  </tr>
+                </thead>
+                <tbody id="participations-tbody">
+                  <tr>
+                    <td colspan="5" style="text-align:center; color:var(--text-secondary); padding:24px 0;">Aucune participation passée.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- CONFIRMATION MODAL -->
+  <div class="modal-overlay hidden" id="confirm-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h4>Confirmer l'inscription</h4>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="color:var(--text);">Vous êtes sur le point de vous inscrire au :</p>
+        <div style="background:var(--bg); border-radius:var(--radius); padding:16px; margin:16px 0;">
+          <strong>Tirage Hadj 2026</strong><br>
+          <span style="font-size:.85rem; color:var(--text-secondary);">Date du tirage : 15 juin 2026</span>
+        </div>
+        <div class="alert alert-warning">
+          ⚠️ Cette action est <strong>irréversible</strong>. Une fois inscrit, vous ne pouvez pas vous désinscrire.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal()">Annuler</button>
+        <button class="btn btn-success" onclick="joinLottery()">✅ Confirmer l'inscription</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS TOAST -->
+  <div class="hidden" id="join-success"
+    style="position:fixed; bottom:24px; right:24px; background:var(--success); color:white;
+           padding:16px 24px; border-radius:var(--radius); box-shadow:var(--shadow-lg);
+           font-size:.9rem; font-weight:600; z-index:1000;">
+    ✅ Inscription confirmée ! Vous êtes inscrit au tirage Hadj 2026.
+  </div>
+
+
+  <script src="../js/tirages-disponibles.js"></script>
+</body>
+</html>
